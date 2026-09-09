@@ -188,18 +188,18 @@ body {
   max-width: 1520px;
   font-size: clamp(16px, 2.3vw, 24px);
   line-height: 1.5;
-  color: var(--on-soil-dim);
+  color: var(--on-soil);       /* same as the .fs-title line below it */
   margin: 0;
 }
 body.detail-open .fs-intro,
 body.is-movie .fs-intro { opacity: 0; }
 
-/* the statement, sitting just below THE PLANET / SOCIETY, above the plants */
+/* the statement, midway between THE PLANET / SOCIETY and the plant titles */
 .fs-banner {
   position: absolute;
   left: 0;
   right: 0;
-  top: 84px;
+  top: 112px;
   margin: 0;
   padding: 0 5vw;
   text-align: center;
@@ -735,7 +735,7 @@ body.is-movie .fs-detail-back { display: none; }
     padding: 16px 16px 4px; text-shadow: none;
   }
   .fs-intro .fs-title { color: var(--ink); margin-top: 10px; }
-  .fs-intro .fs-lede { color: var(--ink-soft); }
+  .fs-intro .fs-lede { color: var(--ink); }
   .fs-detail { position: fixed; inset: 0; background: var(--paper); }
 }
 
