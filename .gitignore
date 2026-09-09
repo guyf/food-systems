@@ -1,0 +1,13 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# dependency dirs (none expected — this is a no-build project)
+node_modules/
+
+# local server / tooling logs
+*.log

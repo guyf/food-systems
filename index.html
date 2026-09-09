@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive infographic: food and farming as the ground everything grows from — how today's system harms the planet and society, and how a better one could help.">
+  <title>Food &amp; Farming: it all grows on our farms</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- reusable "hand-drawn" filters, referenced from CSS as filter:url(#rough) -->
+  <svg width="0" height="0" class="fs-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="rough" x="-6%" y="-6%" width="112%" height="112%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.017" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="rough-strong" x="-8%" y="-8%" width="116%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <header class="fs-header">
+    <div class="fs-brand">Food &amp; Farming</div>
+    <div class="fs-mode" role="group" aria-label="View mode">
+      <button type="button" data-mode="explore" class="is-active" aria-pressed="true">Explore</button>
+      <button type="button" data-mode="movie" aria-pressed="false">Play the story</button>
+    </div>
+  </header>
+
+  <main class="fs-scene" id="scene">
+    <div class="fs-intro" id="intro"><!-- title + lede injected from FS.meta --></div>
+    <div id="diagram" class="fs-field" aria-label="The field: impact areas growing from food and farming"><!-- SVG or accordion injected by diagram.js --></div>
+    <div id="groups" class="fs-groups" aria-hidden="true"><!-- group headings injected by diagram.js --></div>
+    <p id="banner" class="fs-banner">Our farms could be growing so much more than yield</p>
+    <section id="detail" class="fs-detail" hidden aria-live="polite"><!-- detail.js --></section>
+  </main>
+
+  <div id="caption" class="fs-caption" hidden><!-- scenes.js --></div>
+  <div id="playback" class="fs-playback" hidden><!-- scenes.js --></div>
+  <div id="chapter" class="fs-chapter" hidden aria-hidden="true"><!-- chapter.js --></div>
+
+  <div class="fs-grain" aria-hidden="true"></div>
+
+  <!-- classic scripts, deferred: run in order, after parse, before DOMContentLoaded -->
+  <script defer src="js/util.js"></script>
+  <script defer src="js/glyphs.js"></script>
+  <script defer src="data/areas.js"></script>
+  <script defer src="data/scenes.js"></script>
+  <script defer src="js/diagram.js"></script>
+  <script defer src="js/detail.js"></script>
+  <script defer src="js/chapter.js"></script>
+  <script defer src="js/scenes.js"></script>
+  <script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,755 @@
+/* styles.css — Food & Farming Systems
+ * A hand-drawn field: food & farming is the ground, each impact area a plant.
+ * Style homage to Clarkson's Farm — cream paper, ink line, slab display type,
+ * earthy palette, rough edges, animated chapter cards. (Homage, not their
+ * assets or logo.)
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --paper:   #f4ead4;
+  --paper-2: #ece0c2;
+  --paper-3: #e3d4ad;
+  --ink:     #2b2419;
+  --ink-soft:#6b5d45;
+  --line:    #c3ad80;
+
+  --sky-top: #e8e9de;
+  --sky-bot: #dfe6dc;
+  --hill-far:#bccaa9;
+  --hill-mid:#a1b78a;
+  --soil:    #6f5137;
+  --soil-2:  #573c27;
+
+  --planet:  #3f6b53;
+  --society: #b06b25;
+  --harm:    #a13a29;
+  --good:    #4c7a37;
+  --gold:    #c9912a;
+
+  /* text that sits ON the brown soil — always light, in both themes
+     (do NOT override these in the dark block) */
+  --on-soil:     #f6ecd6;
+  --on-soil-dim: #d9cba9;
+  --root:        #b89f76;   /* fine roots / fungal threads on the dark soil */
+
+  --header-h: 60px;
+
+  --font-display: "Oswald", "Arial Narrow", "Helvetica Neue Condensed", system-ui, sans-serif;
+  --font-body: "Bitter", ui-serif, Georgia, "Times New Roman", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:   #241f17;
+    --paper-2: #2c261b;
+    --paper-3: #372f22;
+    --ink:     #ece0c6;
+    --ink-soft:#b7a988;
+    --line:    #4b4030;
+
+    --sky-top: #29303e;
+    --sky-bot: #38403a;
+    --hill-far:#33443a;
+    --hill-mid:#3e5142;
+    --soil:    #3e2d1e;
+    --soil-2:  #2c2015;
+
+    --planet:  #6ea888;
+    --society: #d69a54;
+    --harm:    #db7361;
+    --good:    #7fae64;
+    --gold:    #d8b25a;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--sky-top);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.fs-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* paper grain over everything */
+.fs-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  .fs-grain { mix-blend-mode: overlay; opacity: 0.22; }
+}
+
+/* --------------------------------------------------------------- header */
+.fs-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--header-h);
+  padding: 0 20px;
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+}
+.fs-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.fs-mode {
+  display: inline-flex;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+}
+.fs-mode button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+.fs-mode button + button { border-left: 2px solid var(--ink); }
+.fs-mode button.is-active { background: var(--ink); color: var(--paper); }
+
+/* ---------------------------------------------------------------- scene */
+.fs-scene {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100dvh - var(--header-h));
+  background: var(--sky-top);
+  overflow: hidden;
+}
+.fs-field { position: absolute; inset: 0; }
+.fs-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* intro — the paragraph then, as the closing line on the soil, the title */
+.fs-intro {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 0 24px 2.6%;
+  text-align: center;
+  z-index: 4;
+  pointer-events: none;
+  /* soil-tinted halo so the text stays readable over the stems and roots,
+     without a box hiding them */
+  text-shadow:
+    0 0 12px var(--soil), 0 0 12px var(--soil),
+    0 0 6px var(--soil), 0 2px 5px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.35s;
+}
+.fs-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: clamp(26px, 4.6vw, 44px);
+  line-height: 1.05;
+  margin: 0;
+  color: var(--on-soil);
+}
+.fs-lede {
+  max-width: 1520px;
+  font-size: clamp(16px, 2.3vw, 24px);
+  line-height: 1.5;
+  color: var(--on-soil-dim);
+  margin: 0;
+}
+body.detail-open .fs-intro,
+body.is-movie .fs-intro { opacity: 0; }
+
+/* the statement, sitting just below THE PLANET / SOCIETY, above the plants */
+.fs-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 84px;
+  margin: 0;
+  padding: 0 5vw;
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
+  font-size: clamp(22px, 3.3vw, 42px);   /* only just bigger than the section titles */
+  color: var(--ink);
+  text-shadow: 0 2px 16px var(--sky-top), 0 1px 3px var(--sky-top);
+  transition: opacity 0.35s;
+}
+body.detail-open .fs-banner,
+body.is-movie .fs-banner { opacity: 0; }
+
+/* THE PLANET / SOCIETY — HTML overlay so the SVG's top-crop can't hide them */
+.fs-groups {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 18px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 clamp(48px, 17vw, 340px);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.fs-group-tag {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(21px, 3vw, 38px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding-bottom: 13px;
+}
+.fs-group-tag--planet { color: var(--planet); }
+.fs-group-tag--society { color: var(--society); text-align: right; }
+.fs-group-tag::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.4em;
+  height: 10px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M2,6 C30,1 55,10 80,5 S112,4 118,7' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M2,6 C30,1 55,10 80,5 S112,4 118,7' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 100% 100%;
+}
+.fs-group-tag--society::after { left: auto; right: 0; }
+body.detail-open .fs-groups,
+body.is-movie .fs-groups { opacity: 0; }
+
+/* --------------------------------------------------- SVG scene furniture */
+.fs-sky { fill: var(--sky-top); }
+.fs-haze { fill: var(--sky-bot); opacity: 0.55; }
+
+.fs-hills { filter: url(#rough); }
+.fs-hill--far { fill: var(--hill-far); }
+.fs-hill--mid { fill: var(--hill-mid); }
+
+.fs-soil-fill { fill: var(--soil); }
+.fs-furrow { stroke: var(--soil-2); fill: none; stroke-linecap: round; opacity: 0.75; }
+.fs-soil-edge { stroke: var(--ink); stroke-width: 3.5; fill: none; filter: url(#rough); }
+.fs-tufts path { stroke: var(--good); stroke-width: 2.6; fill: none; stroke-linecap: round; }
+
+/* life in the soil (worms + tiny creatures removed for now) */
+.fs-hyphae { fill: none; stroke: var(--root); stroke-width: 0.7; stroke-linecap: round; opacity: 0.35; }
+
+.fs-fieldname {
+  fill: var(--on-soil);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 46px;
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--soil-2);
+  stroke-width: 5;
+  opacity: 0;                       /* hidden at rest — the intro sits here instead */
+  transition: opacity 0.22s;
+}
+#diagram.has-focus .fs-fieldname { opacity: 1; }
+
+/* ---------------------------------------------------------------- plants */
+.fs-plant {
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.22, 0.68, 0.2, 1);
+}
+.fs-plant:focus-visible { outline: none; }
+.fs-plant-body {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.4s;
+  filter: url(#rough);
+}
+.fs-roots {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;     /* top of the root bbox ≈ the soil surface */
+  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.4s;
+}
+.fs-taproot { fill: none; stroke: var(--root); stroke-width: 1.1; stroke-linecap: round; opacity: 0.9; }
+.fs-rootlet { fill: none; stroke: var(--root); stroke-width: 0.7; stroke-linecap: round; opacity: 0.75; }
+.fs-roothair { fill: none; stroke: var(--root); stroke-width: 0.45; stroke-linecap: round; opacity: 0.5; }
+
+.fs-stem { stroke: var(--ink); stroke-width: 6; fill: none; stroke-linecap: round; }
+.fs-leaf { fill: var(--good); stroke: var(--ink); stroke-width: 2.5; }
+.fs-plant[data-group="planet"] .fs-leaf { fill: var(--planet); }
+.fs-plant[data-group="society"] .fs-leaf { fill: var(--society); }
+
+.fs-head-disc { fill: var(--paper); stroke: var(--ink); stroke-width: 4; }
+.fs-plant[data-group="planet"] .fs-head-disc { fill: color-mix(in srgb, var(--planet) 16%, var(--paper)); }
+.fs-plant[data-group="society"] .fs-head-disc { fill: color-mix(in srgb, var(--society) 18%, var(--paper)); }
+.fs-glyph { stroke: var(--ink); }
+
+.fs-plant-label {
+  fill: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-anchor: middle;
+}
+
+@media (hover: hover) {
+  .fs-plant:not(.is-focused):hover .fs-plant-body,
+  .fs-plant:not(.is-focused):focus-visible .fs-plant-body { transform: rotate(1.6deg); }
+  .fs-plant:not(.is-focused):hover .fs-head-disc { stroke-width: 5.5; }
+}
+
+/* focus: chosen plant scales down centre-stage, the rest retract into soil */
+#diagram.has-focus .fs-plant:not(.is-focused) { pointer-events: none; }
+#diagram.has-focus .fs-plant:not(.is-focused) .fs-plant-body {
+  transform: scaleY(0.02);
+  opacity: 0;
+}
+#diagram.has-focus .fs-plant:not(.is-focused) .fs-roots {
+  transform: scaleY(0.03);
+  opacity: 0;
+}
+#diagram.has-focus .fs-plant.is-focused .fs-plant-body { transform: scale(0.6); }
+#diagram.has-focus .fs-plant.is-focused .fs-roots { transform: scale(0.6); }
+/* the rough filter matters only at rest in the full field — drop it while a
+   plant is focused so the retract/scale transitions stay smooth */
+#diagram.has-focus .fs-plant-body { filter: none; }
+
+/* ------------------------------------------------------ accordion (mobile) */
+#diagram:has(.fs-acc-group) { position: static; padding: 8px 16px 40px; }
+.fs-acc-group { margin: 0 0 18px; }
+.fs-acc-group h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.fs-acc-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.fs-acc-ic { display: inline-flex; }
+.fs-acc-ic .fs-glyph { stroke: var(--ink); }
+.fs-acc-lbl { flex: 1; }
+.fs-acc-chev { color: var(--ink-soft); transition: transform 0.2s; }
+.fs-acc-row.is-active { background: var(--ink); color: var(--paper); }
+.fs-acc-row.is-active .fs-acc-ic .fs-glyph { stroke: var(--paper); }
+.fs-acc-row.is-active .fs-acc-chev { color: var(--paper); transform: rotate(90deg); }
+
+/* ------------------------------------------------- detail: the top splits */
+.fs-detail {
+  position: absolute;
+  inset: 0 0 25% 0;                 /* the sky; the soil (25%) stays clear below */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 6;
+  padding: 26px clamp(18px, 6vw, 72px) 48px;
+  opacity: 0;
+  pointer-events: none;
+  /* a wash so text stays readable over the illustration — not a box.
+     mostly solid, fading only at the very bottom into the field */
+  background: linear-gradient(to bottom, var(--paper) 0%, var(--paper) 74%, transparent 100%);
+  transition: opacity 0.3s;
+}
+.fs-detail.is-open { opacity: 1; pointer-events: auto; }
+
+.fs-detail-inner { position: relative; max-width: 1120px; margin: 0 auto; }
+
+.fs-detail-back {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.fs-detail-back:hover { color: var(--ink); }
+body.is-movie .fs-detail-back { display: none; }
+
+.fs-detail-head { text-align: center; margin: 0 0 26px; }
+.fs-eyebrow {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--society);
+}
+.fs-detail-title {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: clamp(28px, 4.4vw, 44px);
+  line-height: 1.05;
+  filter: url(#rough);            /* hand-inked wobble, like the drawn labels */
+}
+.fs-detail-summary {
+  margin: 0 auto;
+  max-width: 660px;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: clamp(16px, 1.9vw, 19px);
+  line-height: 1.5;
+}
+
+.fs-split {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 6vw, 76px);
+}
+.fs-split::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 50%;
+  width: 1px;
+  background: var(--line);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s ease 0.12s;
+}
+.fs-detail.is-open .fs-split::before { transform: scaleY(1); }
+
+.fs-side {
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.fs-side--today { transform: translateX(-14px); }
+.fs-side--opp { transform: translateX(14px); }
+.fs-detail.is-open .fs-side { opacity: 1; transform: none; }
+.fs-detail.is-open .fs-side--today { transition-delay: 0.06s; }
+.fs-detail.is-open .fs-side--opp { transition-delay: 0.12s; }
+
+.fs-side-title {
+  position: relative;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.04;
+  filter: url(#rough);
+}
+/* a rough drawn underline in the side's own colour */
+.fs-side-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.4em;
+  height: 9px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M2,6 C30,1 55,10 80,5 S112,4 118,7' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M2,6 C30,1 55,10 80,5 S112,4 118,7' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 100% 100%;
+}
+.fs-side--today .fs-side-title { color: var(--harm); }
+.fs-side--opp .fs-side-title { color: var(--good); }
+
+.fs-side-lead {
+  margin: 0 0 16px;
+  font-size: clamp(15px, 1.8vw, 17px);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.fs-para {
+  margin: 0 0 16px;
+  font-size: clamp(16.5px, 1.9vw, 18px);
+  line-height: 1.62;
+}
+.fs-figure {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.02em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.fs-side--today .fs-figure { color: var(--harm); }
+.fs-side--opp .fs-figure { color: var(--good); }
+
+.fs-shift {
+  max-width: 720px;
+  margin: 30px auto 0;
+  text-align: center;
+  font-size: clamp(16px, 2vw, 19px);
+  font-style: italic;
+  line-height: 1.5;
+}
+.fs-shift-tag {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-style: normal;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.fs-sources-wrap { max-width: 720px; margin: 28px auto 0; }
+.fs-sources-wrap h4 {
+  margin: 0 0 7px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.fs-sources { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.fs-sources li { margin: 5px 0; }
+.fs-sources a { color: var(--society); }
+
+@media (min-width: 1200px) {
+  .fs-para { font-size: 19px; }
+  .fs-side-lead { font-size: 18px; }
+}
+
+.fs-detail-inner.emph-today .fs-side--opp,
+.fs-detail-inner.emph-opp .fs-side--today { opacity: 0.4; }
+
+/* -------------------------------------------------------- movie: caption */
+.fs-caption {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 74px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 0 20px;
+  pointer-events: none;
+}
+.fs-caption-inner {
+  max-width: 760px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 13px 22px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: clamp(15px, 2.1vw, 20px);
+}
+.fs-caption-prog { width: min(760px, 92vw); height: 4px; background: var(--line); overflow: hidden; }
+.fs-caption-prog i { display: block; height: 100%; width: 0; background: var(--gold); }
+
+/* ------------------------------------------------------- movie: playback */
+.fs-playback {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 31;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+}
+.fs-playback button {
+  appearance: none;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  padding: 6px 11px;
+  cursor: pointer;
+  line-height: 1;
+}
+.fs-playback button.fs-play { background: var(--ink); color: var(--paper); }
+.fs-playback .fs-scrub { flex: 1; accent-color: var(--society); }
+.fs-playback .fs-time {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: var(--ink-soft);
+  min-width: 52px;
+  text-align: center;
+}
+
+/* --------------------------------------------------- movie: chapter card */
+.fs-chapter {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: rgba(30, 24, 14, 0);
+  transition: background 0.28s;
+}
+.fs-chapter.is-in { background: rgba(30, 24, 14, 0.3); }
+.fs-chapter.is-out { background: rgba(30, 24, 14, 0); }
+
+.fs-chapter-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 9px 11px 0 rgba(20, 16, 8, 0.28);
+  padding: 34px 56px 40px;
+  text-align: center;
+  max-width: 86vw;
+  opacity: 0;
+  transform: translateY(28px) rotate(-2deg);
+}
+.fs-chapter.is-in .fs-chapter-card {
+  opacity: 1;
+  transform: translateY(0) rotate(-1deg);
+  transition: opacity 0.3s, transform 0.46s cubic-bezier(0.2, 0.8, 0.2, 1.05);
+}
+.fs-chapter.is-out .fs-chapter-card {
+  opacity: 0;
+  transform: translateY(-12px) rotate(-1deg);
+  transition: opacity 0.28s, transform 0.28s;
+}
+
+.fs-chapter-num {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 1;
+  color: var(--gold);
+}
+.fs-chapter-kicker {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+.fs-chapter-title {
+  margin: 4px 0 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(28px, 6vw, 52px);
+  line-height: 1.05;
+  color: var(--ink);
+}
+.fs-chapter-rule { display: block; width: 240px; max-width: 60vw; height: 12px; margin: 0 auto; }
+.fs-chapter-rule-path {
+  stroke: var(--ink);
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+}
+.fs-chapter.is-in .fs-chapter-rule-path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.6s ease 0.16s;
+}
+.fs-chapter-critter {
+  position: absolute;
+  left: -64px;
+  bottom: 12px;
+  width: 54px;
+  height: 36px;
+  stroke: var(--ink);
+}
+.fs-chapter.is-in .fs-chapter-critter { animation: fs-drive 1.7s ease-in-out 0.25s both; }
+@keyframes fs-drive { to { left: calc(100% + 64px); } }
+
+/* --------------------------------------------------------------- responsive */
+@media (max-width: 760px) {
+  .fs-split { grid-template-columns: 1fr; gap: 22px; }
+  .fs-split::before { display: none; }
+  .fs-side--today, .fs-side--opp { transform: translateY(10px); }
+}
+
+@media (max-width: 640px) {
+  .fs-scene { min-height: auto; overflow: visible; }
+  .fs-field { position: static; }
+  .fs-groups { display: none; }  /* the accordion has its own group headings */
+  .fs-banner { display: none; }  /* DOM order puts it after the list; intro carries the message */
+  .fs-intro {
+    position: static; height: auto; display: block;
+    padding: 16px 16px 4px; text-shadow: none;
+  }
+  .fs-intro .fs-title { color: var(--ink); margin-top: 10px; }
+  .fs-intro .fs-lede { color: var(--ink-soft); }
+  .fs-detail { position: fixed; inset: 0; background: var(--paper); }
+}
+
+/* --------------------------------------------------- reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fs-plant, .fs-plant-body, .fs-roots, .fs-detail, .fs-intro, .fs-banner, .fs-fieldname,
+  .fs-side, .fs-split::before, .fs-chapter, .fs-chapter-card,
+  .fs-chapter-rule-path, .fs-acc-chev {
+    transition: none !important;
+  }
+  .fs-chapter-critter { animation: none !important; }
+  .fs-side { transform: none !important; }
+  .fs-split::before { transform: scaleY(1) !important; }
+  .fs-chapter-card { transform: none !important; }
+  .fs-chapter.is-in .fs-chapter-card { transform: none !important; }
+  .fs-chapter-rule-path { stroke-dashoffset: 0 !important; }
+}
