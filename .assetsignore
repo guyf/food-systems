@@ -1,0 +1,7 @@
+# Files in the repo root that should NOT be served as part of the site.
+# (Wrangler serves everything under `assets.directory`, which is `.`)
+.assetsignore
+.gitignore
+wrangler.jsonc
+CLAUDE.md
+README.md

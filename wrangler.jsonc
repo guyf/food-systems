@@ -1,0 +1,9 @@
+{
+  // Assets-only Worker: no build step, no server code — just serve the static
+  // files. `index.html` is served at `/`.
+  "name": "food-systems",
+  "compatibility_date": "2026-09-09",
+  "assets": {
+    "directory": "."
+  }
+}

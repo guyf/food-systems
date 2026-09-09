@@ -9,5 +9,9 @@ Thumbs.db
 # dependency dirs (none expected — this is a no-build project)
 node_modules/
 
+# wrangler local state
+.wrangler/
+.dev.vars
+
 # local server / tooling logs
 *.log
