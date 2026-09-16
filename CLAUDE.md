@@ -102,9 +102,10 @@ docs/               notes not served by the site (.assetsignore) —
                     header logo (`node docs/regen-cycle-logo.js assets/img/regen-cycle.svg`)
 assets/audio/       narration mp3s go here later
 assets/img/         regen-cycle.svg — the 6:1 header logo (`.fs-logo`), a
-                    regen rotation read right to left; centred in the header
-                    (grid brand | logo | nav), own row above brand + nav
-                    <=1200px; colours baked in, so a paper card in dark mode
+                    regen rotation read right to left; left of the header in
+                    place of a text brand (alt="Food & Farming"); 50px tall,
+                    40px <=800px, 24px <=640px; colours baked in, so a paper
+                    card in dark mode
 ```
 
 Script load order (all `defer`, so they run in order after parse):
