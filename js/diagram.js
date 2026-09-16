@@ -10,24 +10,32 @@
 (function (FS) {
   "use strict";
 
-  var VB_W = 1200, VB_H = 780;
-  var FIELD_Y = 600;      // soil surface — where every plant is rooted (soil ~= 25% tall)
+  /* VB_W x VB_H and FIELD_Y are mirrored in css/styles.css (--vb-w, --vb-h,
+     --field-y) so the HTML overlays can sit in the drawing's coordinates */
+  var VB_W = 1200, VB_H = 720;
+  var FIELD_Y = 510;      // soil surface — where every plant is rooted (soil ~= 29% tall)
   var CENTRE_X = 600;     // where the focused plant travels to
 
-  /* root x and natural height per area */
+  /* root x and natural height (soil to flower centre) per area */
   var POS = {
-    "climate":        { x: 150, h: 322 },
-    "biodiversity":   { x: 312, h: 348 },
-    "water":          { x: 468, h: 300 },
-    "food-security":  { x: 726, h: 330 },
-    "community":      { x: 848, h: 312 },
-    "health":         { x: 968, h: 344 },
-    "animal-welfare": { x: 1086, h: 306 }
+    "climate":        { x: 150, h: 236 },
+    "biodiversity":   { x: 312, h: 258 },
+    "water":          { x: 468, h: 222 },
+    "food-security":  { x: 726, h: 246 },
+    "community":      { x: 848, h: 228 },
+    "health":         { x: 968, h: 256 },
+    "animal-welfare": { x: 1086, h: 226 }
   };
 
+  var DISC_R = 34;        // flower centre, holds the glyph
+  var PETAL_R = 50;       // tip of the petal ring
+
+  /* hills run well past both edges so a wide window never shows where they stop */
   var HILLS = [
-    "M-10,506 C 170,472 320,494 470,488 S 780,458 980,482 1210,472 1210,472 L1210,608 -10,608 Z",
-    "M-10,540 C 190,520 330,548 540,538 S 840,508 1040,534 1210,526 1210,526 L1210,608 -10,608 Z"
+    "M-1500,404 C -900,388 -400,420 -10,416 C 170,382 320,404 470,398 S 780,368 980,392 1210,382 1210,382" +
+      " C 1600,374 2100,410 2700,398 L2700,518 -1500,518 Z",
+    "M-1500,446 C -900,436 -400,458 -10,450 C 190,430 330,458 540,448 S 840,418 1040,444 1210,436 1210,436" +
+      " C 1600,430 2100,454 2700,444 L2700,518 -1500,518 Z"
   ];
   /* furrow offsets below the soil surface */
   var FURROWS = [20, 50, 88, 130, 172];
@@ -98,6 +106,47 @@
     return d;
   }
 
+  /* point + unit tangent on a cubic bezier given as [[x,y] x4] */
+  function bezier(P, t) {
+    var u = 1 - t;
+    var x = u*u*u*P[0][0] + 3*u*u*t*P[1][0] + 3*u*t*t*P[2][0] + t*t*t*P[3][0];
+    var y = u*u*u*P[0][1] + 3*u*u*t*P[1][1] + 3*u*t*t*P[2][1] + t*t*t*P[3][1];
+    var dx = 3*u*u*(P[1][0]-P[0][0]) + 6*u*t*(P[2][0]-P[1][0]) + 3*t*t*(P[3][0]-P[2][0]);
+    var dy = 3*u*u*(P[1][1]-P[0][1]) + 6*u*t*(P[2][1]-P[1][1]) + 3*t*t*(P[3][1]-P[2][1]);
+    var len = Math.sqrt(dx*dx + dy*dy) || 1;
+    return { x: x, y: y, tx: dx / len, ty: dy / len };
+  }
+
+  /* a filled outline of the stem curve, w0 half-width at the soil, w1 at the top */
+  function taperedStem(P, w0, w1) {
+    var N = 18, left = [], right = [];
+    for (var i = 0; i <= N; i++) {
+      var b = bezier(P, i / N), w = w0 + (w1 - w0) * (i / N);
+      left.push(r1(b.x - b.ty * w) + "," + r1(b.y + b.tx * w));
+      right.push(r1(b.x + b.ty * w) + "," + r1(b.y - b.tx * w));
+    }
+    return "M" + left.join(" L") + " L" + right.reverse().join(" L") + " Z";
+  }
+
+  /* a pointed leaf with a midrib, attached at a stem point, angled up and out */
+  function leaf(at, dir, len, angle) {
+    var w = len * 0.34;
+    var g = FS.svg("g", {
+      "class": "fs-leaf-g",
+      transform: "translate(" + r1(at.x) + "," + r1(at.y) + ") scale(" + dir + ",1) rotate(" + r1(-angle) + ")"
+    });
+    g.appendChild(FS.svg("path", {
+      "class": "fs-leaf",
+      d: "M0,0 C " + r1(len * 0.28) + "," + r1(-w) + " " + r1(len * 0.72) + "," + r1(-w * 0.95) + " " + r1(len) + ",0" +
+         " C " + r1(len * 0.7) + "," + r1(w * 0.75) + " " + r1(len * 0.28) + "," + r1(w * 0.8) + " 0,0 Z"
+    }));
+    g.appendChild(FS.svg("path", {
+      "class": "fs-leaf-rib",
+      d: "M3,0 Q " + r1(len * 0.5) + "," + r1(-w * 0.12) + " " + r1(len * 0.86) + ",0"
+    }));
+    return g;
+  }
+
   /* split a label into two roughly balanced lines (by character count) */
   function labelLines(label) {
     var w = label.split(" ");
@@ -127,7 +176,7 @@
 
     /* sky (kept plain — sun and clouds removed for now) */
     svg.appendChild(FS.svg("rect", { "class": "fs-sky", x: -3000, y: -3000, width: VB_W + 6000, height: 3000 + FIELD_Y }));
-    svg.appendChild(FS.svg("rect", { "class": "fs-haze", x: -3000, y: 320, width: VB_W + 6000, height: 280 }));
+    svg.appendChild(FS.svg("rect", { "class": "fs-haze", x: -3000, y: FIELD_Y - 280, width: VB_W + 6000, height: 280 }));
 
     /* hills */
     var hills = FS.svg("g", { "class": "fs-hills" });
@@ -141,13 +190,14 @@
     FURROWS.forEach(function (off, idx) {
       var y = FIELD_Y + off;
       field.appendChild(FS.svg("path", {
-        "class": "fs-furrow", d: "M-30," + y + " Q 600," + (y - 10 - idx * 2) + " 1230," + y,
+        "class": "fs-furrow", d: "M-1500," + y + " L-30," + y + " Q 600," + (y - 10 - idx * 2) + " 1230," + y + " L2700," + y,
         "stroke-width": 2 + idx * 0.6
       }));
     });
     field.appendChild(FS.svg("path", {
       "class": "fs-soil-edge",
-      d: "M-10," + FIELD_Y + " Q 210," + (FIELD_Y - 9) + " 600," + FIELD_Y + " T 1210," + (FIELD_Y - 2)
+      d: "M-1500," + FIELD_Y + " L-10," + FIELD_Y + " Q 210," + (FIELD_Y - 9) + " 600," + FIELD_Y +
+         " T 1210," + (FIELD_Y - 2) + " L2700," + (FIELD_Y - 2)
     }));
     /* grass tufts along the edge */
     var tuftG = FS.svg("g", { "class": "fs-tufts" });
@@ -167,11 +217,11 @@
     svg.appendChild(buildSoilLife());
 
     /* field name — swaps to the focused area's name */
-    fieldNameEl = FS.svg("text", { "class": "fs-fieldname", x: CENTRE_X, y: FIELD_Y + 106, text: "FOOD & FARMING" });
+    fieldNameEl = FS.svg("text", { "class": "fs-fieldname", x: CENTRE_X, y: FIELD_Y + 118, text: "FOOD & FARMING" });
     svg.appendChild(fieldNameEl);
 
-    /* plants (nudged down a touch so the banner + headings clear the tops) */
-    gPlants = FS.svg("g", { "class": "fs-plants", transform: "translate(0,20)" });
+    /* plants */
+    gPlants = FS.svg("g", { "class": "fs-plants" });
     areasInOrder().forEach(function (area) {
       gPlants.appendChild(buildPlant(area));
     });
@@ -239,32 +289,46 @@
     outer.appendChild(roots);
 
     var body = FS.svg("g", { "class": "fs-plant-body" });
+    var srng = mulberry32(hashStr(area.id + ":stem"));   // own RNG so the roots don't shift
 
-    /* stem */
-    body.appendChild(FS.svg("path", {
-      "class": "fs-stem",
-      d: "M0,0 C -12," + (-h * 0.30) + " 14," + (-h * 0.62) + " 0," + (-h)
-    }));
-    /* leaves */
-    body.appendChild(FS.svg("path", {
-      "class": "fs-leaf",
-      d: "M2," + (-h * 0.5) + " q-34,-6 -40,-30 q28,-4 40,30 z"
-    }));
-    body.appendChild(FS.svg("path", {
-      "class": "fs-leaf",
-      d: "M-1," + (-h * 0.72) + " q34,-6 40,-30 q-28,-4 -40,30 z"
-    }));
+    /* stem — a tapering, gently leaning curve from the soil up to the flower */
+    var lean = (srng() - 0.5) * 22;
+    var stem = [
+      [0, 0],
+      [-10 + lean, -h * 0.34],
+      [10 + lean * 0.6, -h * 0.68],
+      [0, -h]
+    ];
+    body.appendChild(FS.svg("path", { "class": "fs-stem", d: taperedStem(stem, 3.8, 1.7) }));
 
-    /* head */
+    /* leaves along the stem, alternating sides, smaller towards the top */
+    var side = srng() < 0.5 ? -1 : 1;
+    [0.2, 0.42, 0.63].forEach(function (t, i) {
+      var len = (54 - i * 9) * (0.9 + srng() * 0.2);
+      body.appendChild(leaf(bezier(stem, t), side, len, 34 + srng() * 12));
+      side = -side;
+    });
+
+    /* flower head: a ring of petals round a disc that carries the glyph */
     var head = FS.svg("g", { "class": "fs-head", transform: "translate(0," + (-h) + ")" });
-    head.appendChild(FS.svg("circle", { "class": "fs-head-disc", cx: 0, cy: 0, r: 40 }));
-    var glyph = FS.glyph(area.id);
-    glyph.setAttribute("transform", "scale(1.2)");
-    head.appendChild(glyph);
+    var petals = FS.svg("g", { "class": "fs-petals" });
+    var nPetals = 11, twist = srng() * 30;
+    for (var k = 0; k < nPetals; k++) {
+      petals.appendChild(FS.svg("path", {
+        "class": "fs-petal",
+        d: "M0," + (-DISC_R + 6) +
+           " C 12," + (-DISC_R - 2) + " 13," + (-PETAL_R + 4) + " 0," + (-PETAL_R) +
+           " C -13," + (-PETAL_R + 4) + " -12," + (-DISC_R - 2) + " 0," + (-DISC_R + 6) + " Z",
+        transform: "rotate(" + r1(twist + k * 360 / nPetals) + ")"
+      }));
+    }
+    head.appendChild(petals);
+    head.appendChild(FS.svg("circle", { "class": "fs-head-disc", cx: 0, cy: 0, r: DISC_R }));
+    head.appendChild(FS.glyph(area.id));
 
-    /* label sits ABOVE the head, lines stacking upward from a fixed baseline */
+    /* label sits ABOVE the flower, lines stacking upward from a fixed baseline */
     var lines = labelLines(area.label);
-    var lastLineY = -60;                  // just above the disc (top at -40)
+    var lastLineY = -PETAL_R - 14;
     var label = FS.svg("text", {
       "class": "fs-plant-label", x: 0, y: lastLineY - (lines.length - 1) * 20
     });

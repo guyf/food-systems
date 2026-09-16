@@ -10,7 +10,7 @@ today's food system does **harm** and how a better system could do **good**.
 ### The picture
 
 A hand-drawn field. **Food & farming is the soil** — a band across the bottom, about
-25% of the height (`FIELD_Y` in `js/diagram.js`). Each impact area is a **plant
+29% of the height (`FIELD_Y` 510 in a 1200×720 viewBox, `js/diagram.js`). Each impact area is a **plant
 growing out of it** — **The Planet** on the left (climate, biodiversity, water &
 flooding), **Society** on the right (food security, community, human health, animal
 welfare). The sky is kept plain (a sun / clouds were tried and removed — they read
@@ -19,8 +19,18 @@ SVG `FOOD & FARMING` sign there is hidden until a plant is focused.
 
 **THE PLANET / SOCIETY** headings are HTML (`#groups`, built by `diagram.js`), not
 SVG — the scene SVG uses `preserveAspectRatio="xMidYMid meet"` with oversized
-sky/soil rects so nothing is ever cropped, and the headings are pinned over the top
-so they can't be sliced off on wide screens (an earlier `slice` value hid them).
+sky/soil rects and hills/furrows that run far past both edges, so nothing is ever
+cropped or visibly ends on a wide window.
+
+**Overlay sizing — `--u`.** `.fs-scene` is a CSS size container (it needs an
+explicit `height`; `cqh` reads 0 against a min-height-only container). `--u` in
+`css/styles.css` is px per viewBox unit as the SVG is actually drawn
+(`min(100cqw / 1200, 100cqh / 720)`), and every HTML overlay — group headings,
+banner, intro, the detail panel's bottom edge — is positioned and font-sized in
+`--u` against the viewBox (`--vb-w`, `--vb-h`, `--field-y`, mirrored from
+`diagram.js`). So text scales with the plants, not the window width, and nothing
+collides on short, wide laptop screens. Change the viewBox or `FIELD_Y` in both
+places.
 
 Other HTML overlays on the scene, all faded out when a plant is focused or in movie
 mode: `#banner` (`.fs-banner`, the statement pinned above the plants — static text
@@ -28,7 +38,14 @@ in `index.html`) and `#intro` (the paragraph then the `meta.title` line, seated 
 the earth band; `main.js` injects the lede before the title so the title reads as
 the closing line). Text on the soil uses the theme-independent `--on-soil` /
 `--on-soil-dim` / `--root` tokens (never overridden in the dark block), plus a
-soil-tinted text-shadow halo so it stays readable over the stems and roots.
+soil-tinted text-shadow halo so it stays readable over the roots.
+
+Each plant is a flower: a tapering filled stem (a leaning cubic bezier, lean from a
+per-plant seeded RNG separate from the roots'), three pointed leaves with midribs
+attached along the curve on alternating sides, and a head of 11 petals round a disc
+carrying the glyph (`DISC_R`, `PETAL_R`). The label stacks above the petals. Colour
+comes from `--leaf`, set per group: leaves full strength, petals mixed 45% into
+paper. Hover sways the plant and turns the petal ring.
 
 Below ground: every plant has an `.fs-roots` group — a dense network of fine
 thread-like paths (a couple of meandering main threads + wiggly laterals + hairs,
@@ -37,8 +54,8 @@ all generated per-plant from a seeded RNG in `js/diagram.js`), a sibling of
 `has-focus` rules; no `#rough` filter (it chews up the thin strokes). Root strokes
 are ~0.45–1.1px. `buildSoilLife()` currently only scatters a few very faint
 `.fs-hyphae` threads — worms and tiny creatures were removed. The whole
-`.fs-plants` group is nudged down 20 units so the banner + headings clear the
-plant tops.
+`.fs-plants` group sits unshifted; plant heights (`POS[].h`, 222–258) are what
+keep the labels clear of the banner.
 
 - **Explore** — click a plant. It travels to the centre and shrinks; the others
   retract into the soil; the intro fades and the soil sign fades in showing the
@@ -95,7 +112,11 @@ data/areas.js       FS.meta / FS.groups / FS.areas  (the content model)
 data/scenes.js      FS.scenes  (the ordered movie script)
 data/organisations.js  FS.organisations — the UK regen-farming landscape (see below)
 organisations.html  "Who's already in the field": plain first-pass page rendering
-                    data/organisations.js. Deliberately unstyled beyond the tokens.
+                    data/organisations.js. Deliberately unstyled beyond the tokens
+                    (plus the shared `.fs-back` link).
+mission.html        "Our mission": static first-draft copy for the transition-
+                    funding charity; styles are the `.fs-page*` / `.fs-aims` rules
+                    at the end of css/styles.css (shared with future subpages).
 docs/               notes not served by the site (.assetsignore) —
                     landscape-research-method.md is the method + re-run prompt
                     for organisations.js; regen-cycle-logo.js generates the
@@ -104,8 +125,10 @@ assets/audio/       narration mp3s go here later
 assets/img/         regen-cycle.svg — the 6:1 header logo (`.fs-logo`), a
                     regen rotation read right to left; left of the header in
                     place of a text brand (alt="Food & Farming"); 50px tall,
-                    40px <=800px, 24px <=640px; colours baked in, so a paper
-                    card in dark mode
+                    40px <=800px, 24px <=720px; colours baked in, so a paper
+                    card in dark mode. Header nav: Who's in the field · Our
+                    mission · mode toggle; <=720px it wraps to two rows
+                    (--header-h 86px)
 ```
 
 Script load order (all `defer`, so they run in order after parse):
@@ -177,7 +200,8 @@ assigned in `FS.scenes` order, one per distinct `areaId`.
   0–1200 viewBox, `h` natural plant height); add a builder in `js/glyphs.js`
   (`BUILD["your-id"]`); add scene(s) to `FS.scenes`.
 - **Move / resize a plant:** edit its `POS` entry in `js/diagram.js`. The field
-  surface is `FIELD_Y` (558); focused plants travel to `CENTRE_X` (600).
+  surface is `FIELD_Y` (510); focused plants travel to `CENTRE_X` (600). Keep the
+  tallest `h` around 258 or the labels reach the banner.
 - **Add / reorder scenes:** edit `FS.scenes` — array order is play order.
 - **Add narration:** drop `assets/audio/NN-name.mp3`, set it as that scene's
   `narrationSrc`; its duration then controls the scene.
