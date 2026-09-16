@@ -102,8 +102,9 @@ docs/               notes not served by the site (.assetsignore) —
                     header logo (`node docs/regen-cycle-logo.js assets/img/regen-cycle.svg`)
 assets/audio/       narration mp3s go here later
 assets/img/         regen-cycle.svg — the 6:1 header logo (`.fs-logo`), a
-                    regen rotation read right to left; colours baked in, so
-                    it sits on a paper card in dark mode; hidden <=880px
+                    regen rotation read right to left; centred in the header
+                    (grid brand | logo | nav), own row above brand + nav
+                    <=1200px; colours baked in, so a paper card in dark mode
 ```
 
 Script load order (all `defer`, so they run in order after parse):

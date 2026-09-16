@@ -32,7 +32,7 @@
   --on-soil-dim: #d9cba9;
   --root:        #b89f76;   /* fine roots / fungal threads on the dark soil */
 
-  --header-h: 60px;
+  --header-h: 66px;
 
   --font-display: "Oswald", "Arial Narrow", "Helvetica Neue Condensed", system-ui, sans-serif;
   --font-body: "Bitter", ui-serif, Georgia, "Times New Roman", serif;
@@ -96,19 +96,20 @@ body {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
+  /* brand | logo | nav — equal side columns keep the logo truly centred */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "brand logo nav";
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  column-gap: 16px;
   height: var(--header-h);
   padding: 0 20px;
   background: var(--paper);
   border-bottom: 2px solid var(--ink);
 }
 .fs-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  grid-area: brand;
+  justify-self: start;
   white-space: nowrap;
   font-family: var(--font-display);
   font-weight: 700;
@@ -118,13 +119,23 @@ body {
 }
 /* the regen-cycle strip (6:1). Its colours are baked in for the light paper,
    so in dark mode it sits on a small paper card or the black cow vanishes. */
-.fs-logo { display: block; height: 40px; width: auto; }
+.fs-logo { grid-area: logo; justify-self: center; display: block; height: 50px; width: auto; }
 @media (prefers-color-scheme: dark) {
   .fs-logo { background: #f4ead4; border-radius: 3px; padding: 2px 4px; }
 }
-@media (max-width: 1000px) { .fs-logo { height: 30px; } }
-@media (max-width: 880px)  { .fs-logo { display: none; } }
+/* too narrow to centre the logo between brand and nav: give it its own row */
+@media (max-width: 1200px) {
+  :root { --header-h: 108px; }
+  .fs-header {
+    grid-template-columns: auto auto;
+    grid-template-areas: "logo logo" "brand nav";
+    align-content: center;
+    row-gap: 4px;
+  }
+}
 .fs-nav {
+  grid-area: nav;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -758,7 +769,9 @@ body.is-movie .fs-detail-back { display: none; }
 
 @media (max-width: 640px) {
   /* header has three things to fit — tighten everything */
-  .fs-header { gap: 10px; padding: 0 12px; }
+  :root { --header-h: 94px; }
+  .fs-header { column-gap: 10px; padding: 0 12px; }
+  .fs-logo { height: 40px; }
   .fs-brand { font-size: 15px; }
   .fs-nav { gap: 10px; }
   .fs-nav-link { font-size: 11px; letter-spacing: 0.04em; }
