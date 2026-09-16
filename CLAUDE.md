@@ -93,6 +93,12 @@ js/scenes.js        FS.Scenes  — movie engine + playback bar + caption bar,
 js/main.js          boot: inject intro, init modules, wire the mode toggle + Esc
 data/areas.js       FS.meta / FS.groups / FS.areas  (the content model)
 data/scenes.js      FS.scenes  (the ordered movie script)
+data/organisations.js  FS.organisations — the UK regen-farming landscape (see below)
+organisations.html  "Who's already in the field": plain first-pass page rendering
+                    data/organisations.js. Deliberately unstyled beyond the tokens.
+docs/               notes not served by the site (.assetsignore) —
+                    landscape-research-method.md is the method + re-run prompt
+                    for organisations.js
 assets/audio/       narration mp3s go here later
 assets/img/         image assets if ever needed
 ```

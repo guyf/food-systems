@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Who is already helping UK farmers move from intensive to regenerative farming — networks, advisers, certifiers, funders, land-access bodies, welfare charities, outcome-payers and public schemes.">
+  <title>Who's already in the field</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- first-pass page: deliberately plain. Styling to follow. -->
+  <style>
+    body { background: var(--paper); }
+    .org-page { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+    .org-page h1 {
+      font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.02em; font-size: clamp(28px, 4.4vw, 44px); line-height: 1.05; margin: 0 0 8px;
+    }
+    .org-meta { color: var(--ink-soft); margin: 0 0 6px; font-size: 15px; }
+    .org-intro { max-width: 720px; font-size: 17px; margin: 0 0 28px; }
+    .org-toc { margin: 0 0 36px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; }
+    .org-toc a { color: var(--society); }
+    .org-cat { margin: 0 0 44px; }
+    .org-cat h2 {
+      font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.02em; font-size: clamp(22px, 3vw, 30px); margin: 0 0 6px;
+      padding-top: 18px; border-top: 2px solid var(--ink);
+    }
+    .org-cat .blurb { color: var(--ink-soft); font-style: italic; margin: 0 0 18px; max-width: 720px; }
+    .org { margin: 0 0 22px; padding-left: 14px; border-left: 3px solid var(--line); }
+    .org h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 0 0 2px; }
+    .org h3 a { color: var(--ink); text-decoration: none; }
+    .org h3 a:hover { text-decoration: underline; }
+    .org .tags { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; }
+    .org .tags .scale-L { color: var(--good); }
+    .org .tags .scale-M { color: var(--society); }
+    .org .tags .scale-S { color: var(--ink-soft); }
+    .org .tags .unverified { color: var(--harm); }
+    .org p { margin: 0 0 6px; font-size: 16px; }
+    .org .reach { color: var(--ink-soft); font-size: 15px; }
+    .org .relevance { font-size: 15px; }
+    .org .relevance b { color: var(--good); font-family: var(--font-display); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 12px; margin-right: 6px; }
+    .org-gap h2 { border-top: 2px solid var(--ink); padding-top: 18px; }
+    .org-gap li { margin: 0 0 10px; font-size: 16px; }
+    .org-foot { margin-top: 40px; color: var(--ink-soft); font-size: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .org-foot a { color: var(--society); }
+  </style>
+</head>
+<body>
+  <main class="org-page" id="orgs">
+    <p><a href="index.html">‹ Back to the field</a></p>
+    <h1>Who's already in the field</h1>
+    <p class="org-meta" id="org-meta"></p>
+    <p class="org-intro">
+      A first pass at mapping the organisations, networks, funders and schemes already helping
+      UK farmers move away from intensive farming — to see where a charity that funds farmers
+      through the income dip of a regenerative transition would fit, and who it would work with.
+    </p>
+    <ul class="org-toc" id="org-toc"></ul>
+    <div id="org-list"></div>
+    <section class="org-gap">
+      <h2>Where the gap is</h2>
+      <ul id="org-gap"></ul>
+    </section>
+    <p class="org-foot">
+      Scale: <b>L</b> national / large · <b>M</b> national / medium · <b>S</b> regional / small.
+      <span style="color:var(--harm)">Unverified</span> = from general knowledge, not checked this pass.
+      Reach figures are approximate as of the date above. Method for re-running this:
+      <code>docs/landscape-research-method.md</code> in the repo.
+    </p>
+  </main>
+
+  <script defer src="js/util.js"></script>
+  <script defer src="data/organisations.js"></script>
+  <script>
+    /* inline scripts ignore `defer`, so wait for the deferred data files */
+    document.addEventListener("DOMContentLoaded", function () {
+      var D = window.FS && FS.organisations;
+      if (!D) return;
+      var h = FS.h;
+
+      document.getElementById("org-meta").textContent =
+        "Compiled " + D.updated + " · " + D.region + " · " +
+        D.categories.reduce(function (n, c) { return n + c.orgs.length; }, 0) + " entries in " +
+        D.categories.length + " categories";
+
+      var toc = document.getElementById("org-toc");
+      var list = document.getElementById("org-list");
+
+      D.categories.forEach(function (cat) {
+        toc.appendChild(h("li", {}, h("a", { href: "#" + cat.id, text: cat.title })));
+
+        var sec = h("section", { "class": "org-cat", id: cat.id },
+          h("h2", { text: cat.title }),
+          h("p", { "class": "blurb", text: cat.blurb }));
+
+        cat.orgs.forEach(function (o) {
+          var tags = h("p", { "class": "tags" },
+            h("span", { text: o.type }), " · ",
+            h("span", { "class": "scale-" + o.scale, text: "scale " + o.scale }),
+            o.verified ? null : [" · ", h("span", { "class": "unverified", text: "unverified" })]);
+
+          var art = h("article", { "class": "org" },
+            h("h3", {}, h("a", { href: o.url, target: "_blank", rel: "noopener", text: o.name })),
+            tags,
+            h("p", { text: o.summary }),
+            h("p", { "class": "reach" }, "Reach: " + o.reach),
+            o.relevance ? h("p", { "class": "relevance" }, h("b", { text: "Why it matters" }), o.relevance) : null);
+          sec.appendChild(art);
+        });
+        list.appendChild(sec);
+      });
+
+      var gap = document.getElementById("org-gap");
+      (D.gap || []).forEach(function (line) { gap.appendChild(h("li", { text: line })); });
+    });
+  </script>
+</body>
+</html>
