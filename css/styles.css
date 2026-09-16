@@ -112,6 +112,25 @@ body {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+.fs-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.fs-nav-link {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--society);
+  padding-bottom: 2px;
+}
+.fs-nav-link:hover { color: var(--society); }
+
 .fs-mode {
   display: inline-flex;
   border: 2px solid var(--ink);
@@ -726,6 +745,13 @@ body.is-movie .fs-detail-back { display: none; }
 }
 
 @media (max-width: 640px) {
+  /* header has three things to fit — tighten everything */
+  .fs-header { gap: 10px; padding: 0 12px; }
+  .fs-brand { font-size: 15px; }
+  .fs-nav { gap: 10px; }
+  .fs-nav-link { font-size: 11px; letter-spacing: 0.04em; }
+  .fs-mode button { padding: 7px 9px; font-size: 11px; letter-spacing: 0.04em; }
+
   .fs-scene { min-height: auto; overflow: visible; }
   .fs-field { position: static; }
   .fs-groups { display: none; }  /* the accordion has its own group headings */
