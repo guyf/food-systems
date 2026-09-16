@@ -106,12 +106,24 @@ body {
   border-bottom: 2px solid var(--ink);
 }
 .fs-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 20px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+/* the regen-cycle strip (6:1). Its colours are baked in for the light paper,
+   so in dark mode it sits on a small paper card or the black cow vanishes. */
+.fs-logo { display: block; height: 40px; width: auto; }
+@media (prefers-color-scheme: dark) {
+  .fs-logo { background: #f4ead4; border-radius: 3px; padding: 2px 4px; }
+}
+@media (max-width: 1000px) { .fs-logo { height: 30px; } }
+@media (max-width: 880px)  { .fs-logo { display: none; } }
 .fs-nav {
   display: flex;
   align-items: center;

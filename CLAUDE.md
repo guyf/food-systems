@@ -98,9 +98,12 @@ organisations.html  "Who's already in the field": plain first-pass page renderin
                     data/organisations.js. Deliberately unstyled beyond the tokens.
 docs/               notes not served by the site (.assetsignore) —
                     landscape-research-method.md is the method + re-run prompt
-                    for organisations.js
+                    for organisations.js; regen-cycle-logo.js generates the
+                    header logo (`node docs/regen-cycle-logo.js assets/img/regen-cycle.svg`)
 assets/audio/       narration mp3s go here later
-assets/img/         image assets if ever needed
+assets/img/         regen-cycle.svg — the 6:1 header logo (`.fs-logo`), a
+                    regen rotation read right to left; colours baked in, so
+                    it sits on a paper card in dark mode; hidden <=880px
 ```
 
 Script load order (all `defer`, so they run in order after parse):
