@@ -117,6 +117,13 @@ organisations.html  "Who's already in the field": plain first-pass page renderin
 mission.html        "Our mission": static first-draft copy for the transition-
                     funding charity; styles are the `.fs-page*` / `.fs-aims` rules
                     at the end of css/styles.css (shared with future subpages).
+data/systems.js     FS.systems — the three-layer "whole system" (farms → supply
+                    chains → demand), each Today → Could be + levers, with the
+                    push/pull links between layers. First draft; stats flagged
+                    `check: true` until verified.
+systems.html        "The whole system": renders data/systems.js as a stack —
+                    demand on top, supply chains, farms on the soil at the
+                    bottom. Linked from the main header.
 docs/               notes not served by the site (.assetsignore) —
                     landscape-research-method.md is the method + re-run prompt
                     for organisations.js; regen-cycle-logo.js generates the

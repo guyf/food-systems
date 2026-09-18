@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The wider system that has to change: our farms, the supply chains that buy from them, and the demand that drives both — from industrialised, bulk and cheap to regenerative, local and real.">
+  <title>The whole system</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- first-pass page, same spirit as organisations.html: styling kept local -->
+  <style>
+    .sys-page { max-width: 1040px; margin: 0 auto; padding: 32px 20px 80px; }
+    .sys-foot a { color: var(--society); }
+    .sys-page .fs-page-lede { max-width: 760px; margin-bottom: 32px; }
+
+    /* ---- a layer: one band of the stack. Top = the plate, bottom = the soil */
+    .sys-layer {
+      --band: var(--paper-2); --txt: var(--ink); --dim: var(--ink-soft);
+      --was: var(--harm); --will: var(--good); --rule: var(--ink);
+      background: var(--band); color: var(--txt);
+      border: 2px solid var(--rule);
+      padding: 22px 24px 20px;
+    }
+    .sys-layer--supply { --band: var(--paper-3); }
+    .sys-layer--farms {
+      /* the soil — same theme-independent tokens the field uses */
+      --band: var(--soil); --txt: var(--on-soil); --dim: var(--on-soil-dim);
+      --was: #f0a490; --will: #bcd99a; --rule: var(--soil-2);
+      background-image: linear-gradient(180deg, var(--soil) 0%, var(--soil-2) 100%);
+    }
+
+    .sys-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 0 0 16px; }
+    .sys-n {
+      font-family: var(--font-display); font-weight: 700; font-size: 15px;
+      width: 32px; height: 32px; line-height: 28px; text-align: center; flex: none;
+      border: 2px solid currentColor; border-radius: 50%; align-self: center;
+    }
+    .sys-head h2 {
+      font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.02em; font-size: clamp(22px, 3vw, 32px); line-height: 1; margin: 0;
+    }
+    .sys-kicker {
+      font-family: var(--font-display); font-size: 13px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--dim);
+    }
+
+    .sys-shift { display: grid; grid-template-columns: 1fr 44px 1fr; gap: 0 12px; align-items: start; }
+    .sys-arrow {
+      align-self: center; text-align: center; font-family: var(--font-display);
+      font-size: 34px; line-height: 1; color: var(--dim);
+    }
+    .sys-side h3 {
+      font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: 0.14em;
+      text-transform: uppercase; margin: 0 0 2px;
+    }
+    .sys-side--was h3 { color: var(--was); }
+    .sys-side--will h3 { color: var(--will); }
+    .sys-side .label {
+      font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.2vw, 24px);
+      line-height: 1.15; margin: 0 0 8px;
+    }
+    .sys-side ul { margin: 0; padding: 0 0 0 18px; font-size: 15.5px; }
+    .sys-side li { margin: 0 0 4px; }
+    .sys-side--was li::marker { color: var(--was); }
+    .sys-side--will li::marker { color: var(--will); }
+    .sys-stat { margin: 10px 0 0; font-size: 14px; color: var(--dim); }
+    .sys-stat b { font-family: var(--font-display); font-size: 24px; color: var(--was); margin-right: 6px; }
+    .sys-stat .check { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--harm); margin-left: 6px; }
+    .sys-layer--farms .sys-stat .check { color: var(--was); }
+
+    .sys-levers { margin: 18px 0 0; padding-top: 12px; border-top: 1px dashed var(--dim); }
+    .sys-levers h3 {
+      display: inline; font-family: var(--font-display); font-weight: 600; font-size: 12px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-right: 8px;
+    }
+    .sys-levers ul { display: inline; margin: 0; padding: 0; list-style: none; }
+    .sys-levers li {
+      display: inline-block; margin: 6px 6px 0 0; padding: 2px 10px; font-size: 14px;
+      border: 1.5px solid var(--dim); border-radius: 14px;
+    }
+
+    /* ---- the push and pull between two layers */
+    .sys-link {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px;
+      margin: 0 28px; padding: 12px 0; border-left: 2px solid var(--ink); border-right: 2px solid var(--ink);
+      font-size: 14.5px; color: var(--ink-soft);
+    }
+    .sys-link p { margin: 0; padding: 0 16px; display: flex; gap: 8px; }
+    .sys-link span { font-family: var(--font-display); font-size: 20px; line-height: 1.1; color: var(--ink); flex: none; }
+
+    .sys-close { margin: 40px 0 0; max-width: 760px; }
+    .sys-close h2 {
+      font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.02em; font-size: clamp(22px, 3vw, 30px); margin: 0 0 8px;
+      padding-top: 18px; border-top: 2px solid var(--ink);
+    }
+    .sys-close p { font-size: 17px; margin: 0; }
+    .sys-foot { margin-top: 40px; color: var(--ink-soft); font-size: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+
+    @media (max-width: 700px) {
+      .sys-layer { padding: 18px 16px; }
+      .sys-shift { grid-template-columns: 1fr; }
+      .sys-arrow { transform: rotate(90deg); margin: 10px 0; width: 34px; }
+      .sys-link { grid-template-columns: 1fr; gap: 8px; margin: 0 16px; }
+      .sys-link p { padding: 0 10px; }
+    }
+  </style>
+</head>
+<body class="fs-page-body">
+  <div class="fs-grain" aria-hidden="true"></div>
+  <main class="sys-page">
+    <a class="fs-back" href="index.html">‹ Back to the field</a>
+    <h1 class="fs-page-title" id="sys-title">The whole system</h1>
+    <p class="fs-page-lede" id="sys-lede"></p>
+    <div id="sys-stack"></div>
+    <section class="sys-close" id="sys-close"></section>
+    <p class="sys-foot">
+      First draft, <span id="sys-date"></span>. Figures marked <b style="color:var(--harm)">check</b>
+      still need verifying against a source. See also
+      <a href="organisations.html">who's already in the field</a>.
+    </p>
+  </main>
+
+  <script defer src="js/util.js"></script>
+  <script defer src="data/systems.js"></script>
+  <script>
+    /* inline scripts ignore `defer`, so wait for the deferred data files */
+    document.addEventListener("DOMContentLoaded", function () {
+      var D = window.FS && FS.systems;
+      if (!D) return;
+      var h = FS.h;
+
+      document.getElementById("sys-title").textContent = D.title;
+      document.getElementById("sys-lede").textContent = D.lede;
+      document.getElementById("sys-date").textContent = D.updated;
+
+      function side(kind, heading, s) {
+        return h("div", { "class": "sys-side sys-side--" + kind },
+          h("h3", { text: heading }),
+          h("p", { "class": "label", text: s.label }),
+          h("ul", {}, s.points.map(function (p) { return h("li", { text: p }); })),
+          s.stat ? h("p", { "class": "sys-stat" },
+            h("b", { text: s.stat.value }), s.stat.unit,
+            s.stat.check ? h("span", { "class": "check", text: "check" }) : null) : null);
+      }
+
+      function linkBetween(a, b) {
+        var l = (D.links || []).filter(function (x) { return x.between[0] === a && x.between[1] === b; })[0];
+        if (!l) return null;
+        return h("div", { "class": "sys-link" },
+          h("p", {}, h("span", { "aria-hidden": "true", text: "↓" }), l.down),
+          h("p", {}, h("span", { "aria-hidden": "true", text: "↑" }), l.up));
+      }
+
+      var stack = document.getElementById("sys-stack");
+      D.layers.forEach(function (L, i) {
+        if (i > 0) stack.appendChild(linkBetween(D.layers[i - 1].id, L.id));
+        stack.appendChild(h("section", { "class": "sys-layer sys-layer--" + L.id, id: L.id, "aria-label": "Layer " + L.n + ": " + L.name },
+          h("div", { "class": "sys-head" },
+            h("span", { "class": "sys-n", text: L.n }),
+            h("h2", { text: L.name }),
+            h("span", { "class": "sys-kicker", text: L.kicker })),
+          h("div", { "class": "sys-shift" },
+            side("was", "Today", L.today),
+            h("div", { "class": "sys-arrow", "aria-hidden": "true", text: "→" }),
+            side("will", "Could be", L.future)),
+          h("div", { "class": "sys-levers" },
+            h("h3", { text: "What moves it" }),
+            h("ul", {}, L.levers.map(function (x) { return h("li", { text: x }); })))));
+      });
+
+      if (D.closing) {
+        var c = document.getElementById("sys-close");
+        c.appendChild(h("h2", { text: D.closing.headline }));
+        c.appendChild(h("p", { text: D.closing.text }));
+      }
+    });
+  </script>
+</body>
+</html>
