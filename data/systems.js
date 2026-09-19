@@ -14,7 +14,11 @@
  *   name:   "Our farms",
  *   today:  { label, points: [ "…" ] },   // what it is now
  *   future: { label, points: [ "…" ] },   // what it could be
- *   levers: [ "…" ]              // what would actually move it
+ *   levers: [ "…" ],             // what would actually move it
+ *   orgs:   [ "…" ]              // who's working on it — each an EXACT `name`
+ *                                //   from data/organisations.js; the page takes
+ *                                //   the link from there (and warns in the
+ *                                //   console if a name doesn't match)
  * }
  *
  * links[] sit between adjacent layers: `down` is how the upper layer pushes on
@@ -66,6 +70,19 @@ FS.systems = {
         "Public procurement (schools, hospitals) buying seasonal, local, whole food",
         "Honest labelling — true cost, processing, how it was farmed",
         "Tackling food poverty so better food isn't only for the better-off"
+      ],
+      orgs: [
+        "Soil Association",
+        "Sustain",
+        "Sustainable Food Trust",
+        "Food, Farming & Countryside Commission",
+        "FarmED",
+        "Community Supported Agriculture Network UK",
+        "Regenerative Farmers of UK",
+        "Farmerama Radio",
+        "Pasture for Life (Pasture-Fed Livestock Association)",
+        "Wildfarmed",
+        "Farming the Future"
       ]
     },
 
@@ -101,6 +118,20 @@ FS.systems = {
         "Rebuild local processing: small abattoirs, mills, dairies",
         "Food hubs and co-ops that aggregate small farms for bigger buyers",
         "Supermarkets committing to regional, seasonal ranges"
+      ],
+      orgs: [
+        "Sustain",
+        "Landworkers' Alliance",
+        "Community Supported Agriculture Network UK",
+        "Kindling Trust",
+        "Wildfarmed",
+        "Green Farm Collective",
+        "Corporate supply-chain programmes (Arla FarmAhead, First Milk / Nestlé, McCain, PepsiCo, Waitrose, etc.)",
+        "LEAF (Linking Environment And Farming)",
+        "Pasture for Life (Pasture-Fed Livestock Association)",
+        "Real Farming Trust — LEAP loans and grants",
+        "Food, Farming & Countryside Commission",
+        "Farming the Future"
       ]
     },
 
@@ -135,6 +166,47 @@ FS.systems = {
         "Funding farmers through the income dip of the transition",
         "Peer learning, advice and mentoring from farmers who've done it",
         "Secure tenancies long enough to invest in the soil"
+      ],
+      orgs: [
+        "Groundswell",
+        "Nature Friendly Farming Network (NFFN)",
+        "BASE-UK",
+        "Pasture for Life (Pasture-Fed Livestock Association)",
+        "Innovative Farmers",
+        "Farmer Clusters (GWCT / Defra Facilitation Fund)",
+        "Landworkers' Alliance",
+        "Organic Growers Alliance",
+        "Oxford Real Farming Conference (Real Farming Trust)",
+        "The Allerton Project (Game & Wildlife Conservation Trust)",
+        "FarmED",
+        "Organic Research Centre",
+        "Agricology",
+        "Farm Carbon Toolkit",
+        "Rothamsted Research (incl. North Wyke Farm Platform)",
+        "Farming & Wildlife Advisory Group (FWAG)",
+        "Duchy College Rural Business School / Farm Net Zero",
+        "Sustainable Soils Alliance",
+        "Soil Association",
+        "LEAF (Linking Environment And Farming)",
+        "RSPB (Hope Farm & farm advisory)",
+        "The Wildlife Trusts",
+        "Ecological Land Cooperative",
+        "Countryside Regeneration Trust",
+        "Shared Assets",
+        "Land In Our Names (LION)",
+        "The Royal Countryside Fund",
+        "Food & Nature Resilience Fund (Lloyds Banking Group + Wildfarmed)",
+        "Soil Capital",
+        "Agreena",
+        "Regenerate Outcomes",
+        "Water-company catchment schemes (e.g. South West Water 'Upstream Thinking', Severn Trent STEPS)",
+        "Bank transition lending (Lloyds, NatWest, Oxbury)",
+        "Real Farming Trust — LEAP loans and grants",
+        "Esmée Fairbairn Foundation",
+        "Rothschild Foundation",
+        "Environmental Land Management — Sustainable Farming Incentive (England)",
+        "Countryside Stewardship (Higher Tier) & Landscape Recovery",
+        "Devolved schemes — Sustainable Farming Scheme (Wales), Whole Farm Plan / AECS (Scotland), Farming with Nature (NI)"
       ]
     }
   ],

@@ -119,7 +119,9 @@ mission.html        "Our mission": static first-draft copy for the transition-
                     at the end of css/styles.css (shared with future subpages).
 data/systems.js     FS.systems — the three-layer "whole system" (farms → supply
                     chains → demand), each Today → Could be + levers, with the
-                    push/pull links between layers. First draft; stats flagged
+                    push/pull links between layers, and `orgs[]` — exact names
+                    from data/organisations.js (systems.html takes the links from
+                    there, so rename in both). First draft; stats flagged
                     `check: true` until verified.
 systems.html        "The whole system": renders data/systems.js as a stack —
                     demand on top, supply chains, farms on the soil at the

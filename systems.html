@@ -84,6 +84,20 @@
       border: 1.5px solid var(--dim); border-radius: 14px;
     }
 
+    /* who's working on it: names as a dotted-separated run of links */
+    .sys-orgs { margin: 14px 0 0; padding-top: 12px; border-top: 2px dotted var(--dim); font-size: 14.5px; line-height: 1.7; }
+    .sys-orgs h3 {
+      display: inline; font-family: var(--font-display); font-weight: 600; font-size: 12px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-right: 8px;
+    }
+    .sys-orgs ul { display: inline; margin: 0; padding: 0; list-style: none; }
+    .sys-orgs li { display: inline; }
+    .sys-orgs li + li::before { content: " · "; color: var(--dim); }
+    .sys-orgs a { color: var(--txt); text-decoration: none; border-bottom: 1px solid var(--dim); }
+    .sys-orgs a:hover { border-bottom-color: currentColor; }
+    .sys-orgs .all { white-space: nowrap; margin-left: 10px; color: var(--dim); font-family: var(--font-display); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .sys-orgs .all:hover { color: var(--txt); }
+
     /* ---- the push and pull between two layers */
     .sys-link {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px;
@@ -127,6 +141,7 @@
   </main>
 
   <script defer src="js/util.js"></script>
+  <script defer src="data/organisations.js"></script>
   <script defer src="data/systems.js"></script>
   <script>
     /* inline scripts ignore `defer`, so wait for the deferred data files */
@@ -147,6 +162,25 @@
           s.stat ? h("p", { "class": "sys-stat" },
             h("b", { text: s.stat.value }), s.stat.unit,
             s.stat.check ? h("span", { "class": "check", text: "check" }) : null) : null);
+      }
+
+      /* name -> organisation, from the Who's in the field data */
+      var ORGS = {};
+      ((FS.organisations && FS.organisations.categories) || []).forEach(function (c) {
+        c.orgs.forEach(function (o) { ORGS[o.name] = o; });
+      });
+
+      function orgList(names) {
+        var items = (names || []).map(function (n) {
+          var o = ORGS[n];
+          if (!o) { console.warn("systems: no organisation named", n); return null; }
+          return h("li", {}, h("a", { href: o.url, target: "_blank", rel: "noopener", title: o.summary, text: o.name }));
+        }).filter(Boolean);
+        if (!items.length) return null;
+        return h("div", { "class": "sys-orgs" },
+          h("h3", { text: "Who's working on it" }),
+          h("ul", {}, items),
+          h("a", { "class": "all", href: "organisations.html", text: "All in Who's in the field ›" }));
       }
 
       function linkBetween(a, b) {
@@ -171,7 +205,8 @@
             side("will", "Could be", L.future)),
           h("div", { "class": "sys-levers" },
             h("h3", { text: "What moves it" }),
-            h("ul", {}, L.levers.map(function (x) { return h("li", { text: x }); })))));
+            h("ul", {}, L.levers.map(function (x) { return h("li", { text: x }); }))),
+          orgList(L.orgs)));
       });
 
       if (D.closing) {
