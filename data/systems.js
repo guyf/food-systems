@@ -72,17 +72,26 @@ FS.systems = {
         "Tackling food poverty so better food isn't only for the better-off"
       ],
       orgs: [
-        "Soil Association",
+        "The Food Foundation (incl. Peas Please)",
+        "Food for Life (Soil Association)",
+        "Sustainable Food Places",
+        "Eating Better",
+        "Chefs in Schools",
+        "School Food Matters",
+        "Veg Power",
+        "Bite Back",
+        "Recipe for Change",
+        "Obesity Health Alliance",
+        "Slow Food in the UK",
+        "Nourish Scotland",
+        "Food Sense Wales",
         "Sustain",
         "Sustainable Food Trust",
         "Food, Farming & Countryside Commission",
         "FarmED",
         "Community Supported Agriculture Network UK",
-        "Regenerative Farmers of UK",
-        "Farmerama Radio",
         "Pasture for Life (Pasture-Fed Livestock Association)",
-        "Wildfarmed",
-        "Farming the Future"
+        "Farmerama Radio"
       ]
     },
 
@@ -120,6 +129,20 @@ FS.systems = {
         "Supermarkets committing to regional, seasonal ranges"
       ],
       orgs: [
+        "Groceries Code Adjudicator",
+        "Local Food Plan (Sustain, Landworkers' Alliance, Pasture for Life, FFCC, Sustainable Food Trust)",
+        "Better Food Traders",
+        "Growing Communities (Better Food Shed)",
+        "Open Food Network UK",
+        "Abattoir Sector Group (convened by the Sustainable Food Trust)",
+        "Farm Retail Association",
+        "Dynamic Food Procurement National Advisory Board",
+        "Food for Life (Soil Association)",
+        "Sustainable Food Places",
+        "Riverford",
+        "Hodmedod's",
+        "Real Bread Campaign (Sustain)",
+        "WRAP — UK Food and Drink Pact (formerly Courtauld Commitment 2030)",
         "Sustain",
         "Landworkers' Alliance",
         "Community Supported Agriculture Network UK",
@@ -127,11 +150,8 @@ FS.systems = {
         "Wildfarmed",
         "Green Farm Collective",
         "Corporate supply-chain programmes (Arla FarmAhead, First Milk / Nestlé, McCain, PepsiCo, Waitrose, etc.)",
-        "LEAF (Linking Environment And Farming)",
         "Pasture for Life (Pasture-Fed Livestock Association)",
-        "Real Farming Trust — LEAP loans and grants",
-        "Food, Farming & Countryside Commission",
-        "Farming the Future"
+        "Real Farming Trust — LEAP loans and grants"
       ]
     },
 

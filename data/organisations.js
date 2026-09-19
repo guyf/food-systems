@@ -3,7 +3,9 @@
  * FIRST PASS (16 Sep 2026). Who is already active in helping UK farmers move
  * from intensive to regenerative / agroecological / nature-friendly farming —
  * networks, advisers, certifiers, funders, land-access bodies, welfare
- * charities, outcome-payers and public schemes.
+ * charities, outcome-payers and public schemes. SECOND PASS (19 Sep 2026)
+ * added two categories beyond the farm gate — supply chains and demand —
+ * which feed the upper two layers of systems.html.
  *
  * Compiled to inform a possible new charity that would fund farmers through
  * the income dip of a transition (see the "Where the gap is" section on the
@@ -13,7 +15,8 @@
  * {
  *   name, url,
  *   type:     "charity" | "cic" | "co-op" | "company" | "programme" |
- *             "funder" | "public" | "network" | "union" | "research"
+ *             "funder" | "public" | "network" | "union" | "research" |
+ *             "social-enterprise"
  *   summary:  2–3 sentences on what they actually do
  *   reach:    size / importance / reach, with numbers where known
  *   scale:    "L" (national, large) | "M" (national, medium) | "S" (regional / small)
@@ -26,7 +29,7 @@
 window.FS = window.FS || {};
 
 FS.organisations = {
-  updated: "2026-09-16",
+  updated: "2026-09-19",
   region: "UK",
 
   categories: [
@@ -698,14 +701,280 @@ FS.organisations = {
           verified: false
         }
       ]
+    },
+
+    /* ==================================================================== *
+     * Beyond the farm gate (added 19 Sep 2026). The two categories below
+     * are the upper layers of systems.html — the supply chains farms sell
+     * into, and the demand that drives them. A farm can't stay regenerative
+     * if nobody will buy what a diverse, low-input farm grows.
+     * ==================================================================== */
+    {
+      id: "supply-chains",
+      title: "Shorter, fairer supply chains",
+      blurb: "The routes from farm to plate that don't run through bulk supermarket " +
+             "contracts — local retailers, food hubs, box schemes, small abattoirs and " +
+             "mills, fairer public procurement — plus the regulator that polices the " +
+             "big retailers. Where a farmer's changed output finds a buyer.",
+      orgs: [
+        {
+          name: "Groceries Code Adjudicator",
+          url: "https://www.gov.uk/government/organisations/groceries-code-adjudicator",
+          type: "public",
+          summary: "The independent regulator that enforces the Groceries Supply Code of Practice on the biggest retailers — how they treat their direct suppliers on delistings, forecasting, late payment and invoice disputes. Runs an annual confidential supplier survey.",
+          reach: "Covers 14 designated retailers (Tesco, Sainsbury's, Asda, Morrisons, Aldi, Lidl, Co-op, Waitrose, M&S, Iceland, Ocado, Amazon, B&M, TJ Morris). 2026 survey: compliance 'high' but Code issues slightly up; statutory review debated April 2026.",
+          scale: "L",
+          relevance: "Only protects direct suppliers, not most farmers further up the chain — a recurring campaign target for widening its remit.",
+          verified: true
+        },
+        {
+          name: "Better Food Traders",
+          url: "https://betterfoodtraders.org/",
+          type: "cic",
+          summary: "UK-wide network of ethical retailers — shops, veg box schemes, food hubs, market stalls, bakeries — that sell organic and agroecological food and buy directly from local farmers. Training, peer learning and an annual gathering. Spun out of Growing Communities; joined the Sustain alliance in 2024.",
+          reach: "About 210 shops, markets, bakeries, hubs and farmers in the network.",
+          scale: "M",
+          relevance: "A ready route to market for transitioning farms' more varied, seasonal output.",
+          verified: true
+        },
+        {
+          name: "Growing Communities (Better Food Shed)",
+          url: "https://growingcommunities.org/",
+          type: "social-enterprise",
+          summary: "Community-led Hackney organisation (since 1996) running a weekly organic veg scheme, a farmers' market and urban farms. Its not-for-profit wholesale arm, the Better Food Shed in Bow (2019), supplies local organic produce to shops, schools, NHS services and other veg schemes across London.",
+          reach: "Routes to market for 20+ small organic farms and growers; veg scheme across north, east and south London.",
+          scale: "S",
+          relevance: "Template for the 'food hub' that aggregates many small farms for bigger buyers.",
+          verified: true
+        },
+        {
+          name: "Open Food Network UK",
+          url: "https://about.openfoodnetwork.org.uk/",
+          type: "social-enterprise",
+          summary: "Open-source online marketplace software for food hubs, producers and community food enterprises to sell direct. Also led the Food Data Collaboration (2022–25) so local producers can list once and sell across several platforms.",
+          reach: "Since 2014 has facilitated over £7m of sales of local, sustainable food.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Local Food Plan (Sustain, Landworkers' Alliance, Pasture for Life, FFCC, Sustainable Food Trust)",
+          url: "https://www.localfoodplan.org/",
+          type: "programme",
+          summary: "Joint programme mapping what holds the local food sector back — processing, aggregation, logistics, finance, procurement — and what would unlock it. Published 'Growing the Local Food Sector' (2024, 44 interviews) and the 'Local Food Growth Plan' (April 2025).",
+          reach: "Two-year programme funded by the Rothschild Foundation; national policy reach through its five partners.",
+          scale: "M",
+          relevance: "The best current map of the infrastructure gaps between a regenerative farm and a local buyer.",
+          verified: true
+        },
+        {
+          name: "Abattoir Sector Group (convened by the Sustainable Food Trust)",
+          url: "https://sustainablefoodtrust.org/our-work/local-abattoirs/",
+          type: "network",
+          summary: "Steering group of small abattoir operators, the Sustainable Food Trust, Rare Breeds Survival Trust, the Royal Countryside Fund, National Craft Butchers and others, working to stop the loss of small local abattoirs and rebuild the network.",
+          reach: "Small abattoirs have been closing at ~10% a year; only around 49 small red-meat abattoirs remain across England, Wales and Scotland. Government has ring-fenced £3m for new abattoirs.",
+          scale: "M",
+          relevance: "Pasture-based livestock farms need a local abattoir to sell their own meat — without one, the premium goes to the processor.",
+          verified: true
+        },
+        {
+          name: "Farm Retail Association",
+          url: "https://farmretail.co.uk/",
+          type: "co-op",
+          summary: "The national body for farm shops, farmers' markets and pick-your-own (formerly FARMA; roots back to 1979). Recently rebranded with Hugh Fearnley-Whittingstall as patron.",
+          reach: "About 325 member farm shops and markets, out of 1,000+ in the UK.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Dynamic Food Procurement National Advisory Board",
+          url: "https://www.dynamicfood.org/",
+          type: "network",
+          summary: "Voluntary coalition promoting 'dynamic purchasing' so small local producers can win public-sector food contracts (schools, hospitals, prisons) instead of being locked out by big framework deals. Grew from the Bath & North East Somerset pilot.",
+          reach: "B&NES pilot served 60+ primary schools with food spend 6% lower in real terms; praised by a Commons select committee as a model for national roll-out.",
+          scale: "S",
+          relevance: "Public procurement is the biggest single lever for guaranteed local demand.",
+          verified: true
+        },
+        {
+          name: "Riverford",
+          url: "https://www.riverford.co.uk/",
+          type: "company",
+          summary: "Organic veg box company founded in 1987 by Guy Singh-Watson in Devon; fully employee-owned since 2023 and a B Corp. Grows on its own farms and buys from a group of mainly British small-scale organic growers.",
+          reach: "About 75,000 boxes a week; turnover £116.8m (year to May 2025).",
+          scale: "L",
+          relevance: "Proof a short, seasonal chain can work at national scale.",
+          verified: true
+        },
+        {
+          name: "Hodmedod's",
+          url: "https://hodmedods.co.uk/",
+          type: "company",
+          summary: "Suffolk company (2012) that grew out of the Norwich Resilient Food Project, building UK markets for British-grown pulses, grains and seeds — fava beans, carlin peas, lentils, quinoa — which were otherwise exported or fed to livestock.",
+          reach: "Sells retail to wholesale (500g to tonnes); BBC Food & Farming Award winner.",
+          scale: "S",
+          relevance: "Creates a market for the break crops that diverse regenerative rotations produce.",
+          verified: true
+        },
+        {
+          name: "Real Bread Campaign (Sustain)",
+          url: "https://www.sustainweb.org/realbread/",
+          type: "programme",
+          summary: "Sustain's campaign for additive-free bread from small local bakeries — runs the Real Bread Map, the Loaf Mark scheme and the microbakery handbook, and supports independent mills.",
+          reach: "Around 1,000 micro and small bakeries, baking schools and mills on the Real Bread Map.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "WRAP — UK Food and Drink Pact (formerly Courtauld Commitment 2030)",
+          url: "https://www.wrap.ngo/take-action/uk-food-drink-pact",
+          type: "charity",
+          summary: "WRAP's voluntary agreement across the whole food chain to cut food waste, greenhouse gas emissions and water stress from farm to fork.",
+          reach: "Nearly 200 organisations including all the major supermarkets and big restaurant chains.",
+          scale: "L",
+          verified: true
+        }
+      ]
+    },
+
+    /* -------------------------------------------------------------------- */
+    {
+      id: "demand",
+      title: "What we eat — diets, food culture & demand",
+      blurb: "The people changing what the country wants to eat: school food and food " +
+             "education, healthier and less-and-better-meat diets, campaigns against junk " +
+             "food marketing, and the local and national food partnerships pulling it " +
+             "together. Demand is what ultimately pays for regenerative farming.",
+      orgs: [
+        {
+          name: "The Food Foundation (incl. Peas Please)",
+          url: "https://foodfoundation.org.uk/",
+          type: "charity",
+          summary: "Food-policy think tank tracking the state of the UK diet — its annual 'Broken Plate' report — and running Peas Please, which gets retailers, caterers and manufacturers to pledge to sell more veg. Co-leads the Recipe for Change coalition.",
+          reach: "Broken Plate 2025: healthier food is over twice the price per calorie; the poorest fifth would need 45% of disposable income for a healthy diet. Peas Please: 110 pledgers, 1.1bn extra portions of veg sold or served.",
+          scale: "L",
+          verified: true
+        },
+        {
+          name: "Food for Life (Soil Association)",
+          url: "https://www.foodforlife.org.uk/",
+          type: "programme",
+          summary: "The Soil Association's programme for better food in schools, hospitals, care homes and workplaces — the 'Food for Life Served Here' award certifies caterers for fresh, additive-free, local and organic ingredients.",
+          reach: "1.7m+ Served Here meals a day across 10,000+ UK schools and other settings.",
+          scale: "L",
+          relevance: "Gold award requires 15%+ organic and significant local sourcing — direct, guaranteed demand for transitioning farms.",
+          verified: true
+        },
+        {
+          name: "Sustainable Food Places",
+          url: "https://www.sustainablefoodplaces.org/",
+          type: "network",
+          summary: "UK network of local food partnerships — councils, farmers, food businesses and charities working on each place's food system, including linking local producers to public-sector contracts. Led by the Soil Association, Food Matters, Sustain, Food Sense Wales and Nourish Scotland.",
+          reach: "120+ food partnerships; 123 local authorities working with them.",
+          scale: "L",
+          verified: true
+        },
+        {
+          name: "Eating Better",
+          url: "https://www.eating-better.org/",
+          type: "network",
+          summary: "Alliance working for 'less and better' meat and dairy — a 50% cut in UK consumption by 2030 and a shift to better (pasture-fed, higher-welfare, agroecological) meat and dairy as standard. Publishes sourcing guides for caterers and retailers.",
+          reach: "About 70 member organisations, including Sustain, Pasture for Life, LEAF, NFFN, the Landworkers' Alliance and The Wildlife Trusts.",
+          scale: "M",
+          relevance: "The demand-side twin of pasture-based regenerative livestock.",
+          verified: true
+        },
+        {
+          name: "Bite Back",
+          url: "https://www.biteback2030.com/",
+          type: "charity",
+          summary: "Youth-led movement founded by Jamie Oliver and Nicolai Tangen, campaigning to put child health first — especially against junk-food advertising and marketing aimed at young people.",
+          reach: "National campaigns; its youth board helped win the government pledge to restrict online junk-food advertising.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Chefs in Schools",
+          url: "https://chefsinschools.org.uk/",
+          type: "charity",
+          summary: "Founded 2018 by Henry Dimbleby, chef Nicole Pisani and head teacher Louise Nichols. Puts trained chefs into school kitchens and upskills kitchen teams to cook from scratch, alongside food education.",
+          reach: "Improved school food for 100,000+ children in its first six years.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "School Food Matters",
+          url: "https://www.schoolfoodmatters.org/",
+          type: "charity",
+          summary: "London charity (2007) campaigning for fresh, sustainable school food and running food-education programmes — growing, cooking and selling produce, holiday food and fun.",
+          reach: "76,600+ children in 800+ schools; works in every London borough and cities across England.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Veg Power",
+          url: "https://vegpower.org.uk/",
+          type: "programme",
+          summary: "Industry-and-media-backed campaign to get children eating more veg, best known for the 'Eat Them to Defeat Them' TV ads and primary schools programme.",
+          reach: "2024: 620,000 children in 2,375 schools. Over six years: 1.7m children, 5,000+ schools, £20m+ of donated advertising.",
+          scale: "L",
+          verified: true
+        },
+        {
+          name: "Recipe for Change",
+          url: "https://www.recipeforchange.org.uk/",
+          type: "network",
+          summary: "Coalition calling for a levy on unhealthy food (building on the Soft Drinks Industry Levy), reformulation by industry, and the revenue reinvested in children's health and access to good food. Led by Sustain, the Obesity Health Alliance and the Food Foundation.",
+          reach: "41 health organisations, royal medical colleges and food campaigners.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Obesity Health Alliance",
+          url: "https://obesityhealthalliance.org.uk/",
+          type: "network",
+          summary: "Coalition of health charities, medical royal colleges and campaign groups pushing for policies on the food environment — marketing, promotions, reformulation — rather than individual willpower.",
+          reach: "50+ member organisations, including the BMA, Cancer Research UK, Diabetes UK and British Heart Foundation.",
+          scale: "L",
+          verified: true
+        },
+        {
+          name: "Slow Food in the UK",
+          url: "https://www.slowfood.org.uk/",
+          type: "network",
+          summary: "UK arm of the international Slow Food movement: local groups, the Ark of Taste catalogue of traditional foods at risk, and a Cooks' Alliance of chefs committed to using them.",
+          reach: "80 UK products on the Ark of Taste; around 100 chefs in the Cooks' Alliance.",
+          scale: "S",
+          relevance: "Builds demand for flavour and variety — rare breeds, heritage grains, regional foods.",
+          verified: true
+        },
+        {
+          name: "Nourish Scotland",
+          url: "https://www.nourishscotland.org/",
+          type: "charity",
+          summary: "Scottish food-justice campaign that pushed for the Good Food Nation Act and now presses for its plans to be delivered; Scotland lead for Sustainable Food Places.",
+          reach: "Food partnerships in 15 of Scotland's 32 local authority areas.",
+          scale: "M",
+          verified: true
+        },
+        {
+          name: "Food Sense Wales",
+          url: "https://www.foodsensewales.org.uk/",
+          type: "charity",
+          summary: "Founded 2018 to put sustainable food and farming at the heart of Welsh policy ('food in all policies'); runs Peas Please, Sustainable Food Places and Food for Life work in Wales.",
+          reach: "Wales-wide.",
+          scale: "M",
+          verified: true
+        }
+      ]
     }
   ],
 
-  /* Read-across for the charity idea — where the gap seems to be. */
+  /* Read-across''' for the charity idea — where the gap seems to be. */
   gap: [
     "Nobody on this list is a charity offering multi-year, income-replacing grants to a farmer for the specific purpose of getting through the yield-and-income dip of a planned transition. That gap is real.",
     "The closest things are: the Food & Nature Resilience Fund (pays for verified outcomes, not lost income; commercial backers); Regenerate Outcomes (absorbs up-front training cost against future carbon credits); Real Farming Trust's LEAP (small charitable loans/grants); the Royal Countryside Fund's Farm Resilience Programme (skills, not cash); and SFI (per-action payments that don't track a farm's income curve).",
     "The pieces a new charity would not need to build exist already: farmer reach (NFFN, Farmer Clusters, Groundswell, BASE-UK, Pasture for Life), advice and mentoring (FWAG, Allerton, FarmED, Regenerate Outcomes), measurement (Farm Carbon Toolkit, Global Farm Metric, Soil Association Exchange), and funders (Esmée Fairbairn, Farming the Future, Rothschild).",
+    "Beyond the farm gate, the gap is infrastructure more than intent: plenty of organisations are building demand (Food for Life, Eating Better, the Food Foundation) and short chains (Better Food Traders, food hubs), but small abattoirs, mills and aggregation hubs are closing or missing — so a transitioning farm's more varied output often has nowhere local to go. A transition fund may need a route-to-market partner as much as a cheque.",
     "The hard design questions are the ones the existing outcome-payers have dodged: how to define and verify 'the dip' fairly, how to avoid paying for change that would have happened anyway, and how to hand off to a market premium or public scheme at the end."
   ]
 };

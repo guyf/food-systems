@@ -34,6 +34,18 @@ and partners rather than duplicates.
 6. Paying farmers for the transition — outcome payments, premiums & private finance
 7. Philanthropic funders active in this space
 8. Government & public schemes (context)
+9. Shorter, fairer supply chains *(added 19 Sep 2026)*
+10. What we eat — diets, food culture & demand *(added 19 Sep 2026)*
+
+Categories 9–10 look beyond the farm gate and feed the upper two layers of
+`systems.html` (each layer's `orgs[]` in `data/systems.js` names entries here
+exactly). For them, "helps a farmer change system" widens to "changes what a
+regenerative farm can sell, and to whom": local retail and food hubs, small
+processing (abattoirs, mills), public procurement, supply-chain regulation,
+school food and food education, diet and less-and-better-meat campaigns,
+junk-food marketing and levy campaigns, and local/national food partnerships.
+Exclude general health charities with no food-system work, and big retailers'
+own marketing.
 
 Plus a short **"Where the gap is"** read-across at the end, written from the
 charity's point of view.
@@ -68,6 +80,18 @@ number, adjacent organisations mentioned (the "who else is in the room" test),
 and any funder named. Entries with no search hit were written from general
 knowledge and marked `verified: false`.
 
+Second pass (19 Sep 2026, categories 9–10) searches, of the form:
+
+- `Groceries Code Adjudicator <year> survey designated retailers`
+- `<network> members independent retailers UK` (Better Food Traders, Farm Retail Association)
+- `UK small abattoirs closing number <year>` / `local food infrastructure food hubs mills report`
+- `Food for Life Served Here meals a day schools` / `Dynamic Food Procurement`
+- `<campaign> children reached schools` (Veg Power, School Food Matters, Chefs in Schools)
+- `<coalition> members` (Eating Better, Recipe for Change, Obesity Health Alliance)
+
+Every entry there was checked against a live source (all `verified: true`), and
+each URL was requested to confirm it resolves.
+
 **Best single sources found:** the Esmée Fairbairn "Financing the future of UK
 sustainable agriculture" piece; the Rothschild Foundation regenerative
 food-and-farming strategy page; the Farming Help partnership pages (welfare
@@ -95,6 +119,12 @@ staff size. Where nothing is published, say "small" and mark unverified.
 - Regional FarmStart schemes, farm clusters' own websites, and university
   centres (Harper Adams, RAU, Cranfield soils) omitted for length.
 
+- Supply chains / demand (categories 9–10): no mills or grain networks beyond
+  the Real Bread Campaign and Hodmedod's (e.g. UK Grain Lab, local mill
+  networks); no food-poverty bodies (Trussell, Feeding Britain, Alexandra Rose);
+  no food-waste redistributors; corporate retailers' own local-sourcing
+  programmes not listed.
+
 ## Prompt to re-run this
 
 > Refresh `data/organisations.js` for the food-systems site. Read
@@ -104,7 +134,9 @@ staff size. Where nothing is published, say "small" and mark unverified.
 > setting `verified: true` only where you found a live source this pass. Then
 > search for organisations that have appeared since the `updated` date —
 > especially new transition-finance or outcome-payment schemes, new pooled
-> funds, and anything Scotland / Wales / NI specific — and add them. Address
+> funds, new food hubs / local processing / procurement schemes and diet
+> campaigns (categories 9–10), and anything Scotland / Wales / NI specific —
+> and add them, keeping the `orgs[]` names in `data/systems.js` matching. Address
 > the "Known gaps" list. Rewrite the `gap` section from the point of view of a
 > charity that funds farmers through the income dip of a regenerative
 > transition. Update the `updated` date, run `node --check data/organisations.js`,
